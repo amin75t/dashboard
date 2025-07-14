@@ -20,10 +20,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fa">
-      <body className={` ${geistMono.variable} antialiased`}>
+      <body className={`${geistMono.variable} antialiased`}>
         <div className="flex items-start justify-end">
           <div className="flex-1">{children}</div>
-          <Sidebar />
+           <Sidebar /> 
         </div>
       </body>
     </html>

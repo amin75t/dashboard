@@ -2,71 +2,74 @@
 
 import { JSX, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { Bell, Settings } from "lucide-react";
 import { cn } from "@/lib/utils/className";
-import dynamic from "next/dynamic";
-import dynamicIconImports from "lucide-react/dynamicIconImports";
-import { LucideProps } from "lucide-react";
 
 type SidebarItem = {
   label: string;
   icon: JSX.Element;
   href: string;
 };
-type IconProps = {
-  name: keyof typeof dynamicIconImports;
-} & Omit<LucideProps, "ref">;
-
-const Icon = ({ name, ...props }: IconProps) => {
-  const IconComponent = dynamic(dynamicIconImports[name]);
-  return <IconComponent {...props} />;
-};
 
 const sidebarItems: SidebarItem[] = [
   {
     label: "میزکار",
-    icon: <Icon className="w-5 h-5" name="layout-grid" />,
-    href: "/dashboard",
+    icon: <Image alt="icon" src="/icons/Vector.svg" width={20} height={20} />,
+    href: "/",
   },
   {
     label: "پرداخت",
-    icon: <Icon className="w-5 h-5" name="credit-card" />,
+    icon: <Image alt="icon" src="/icons/Vector.svg" width={20} height={20} />,
     href: "/payments",
   },
   {
     label: "مدارک و گواهی‌ها",
-    icon: <Icon className="w-5 h-5" name="files" />,
+    icon: <Image alt="icon" src="/icons/Vector.svg" width={20} height={20} />,
     href: "/documents",
   },
   {
     label: "اعلان‌ها",
-    icon: <Icon className="w-5 h-5" name="bell" />,
+    icon: <Bell className="w-5 h-5 text-gray-600" />,
     href: "/notifications",
   },
   {
     label: "پشتیبانی",
-    icon: <Icon className="w-5 h-5" name="help-circle" />,
+    icon: <Image alt="icon" src="/icons/suport.svg" width={20} height={20} />,
     href: "/support",
   },
   {
     label: "حساب کاربری",
-    icon: <Icon className="w-5 h-5" name="settings" />,
+    icon: <Settings className="w-5 h-5 text-gray-600" />,
     href: "/account",
   },
 ];
 
 export default function Sidebar() {
   const [active, setActive] = useState("/dashboard");
+  const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <aside dir="rtl" className="w-64 h-screen bg-[#F8F8F8] flex flex-col justify-between py-6 px-4 rounded-r-3xl border-l border-gray-200">
-      {/* Header */}
+    <aside
+      dir="rtl"
+      className={cn(
+        "flex flex-col justify-between h-screen py-6 px-2 bg-white border-l border-gray-200 transition-width duration-300",
+        collapsed ? "w-20" : "w-64"
+      )}
+    >
       <div>
-        <div className="flex items-center gap-3 px-2 mb-10">
+        <div
+          className={cn(
+            "flex items-center mb-10 transition-opacity duration-300",
+            collapsed ? "opacity-0" : "opacity-100"
+          )}
+        >
           <div className="w-10 h-10 bg-[#E8D9B7] rounded-full" />
-          <span className="text-primary font-bold text-lg">اسم برند</span>
+          <span className="mr-2 text-lg font-bold text-[#20B9C5]">
+            اسم برند
+          </span>
         </div>
 
-        {/* Items */}
         <ul className="space-y-2">
           {sidebarItems.map((item) => (
             <li key={item.href}>
@@ -74,28 +77,45 @@ export default function Sidebar() {
                 href={item.href}
                 onClick={() => setActive(item.href)}
                 className={cn(
-                  "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium",
+                  "flex items-center gap-3 p-2 rounded-lg transition-colors duration-200",
+                  collapsed ? "justify-center" : "",
                   active === item.href
                     ? "bg-primary/10 text-primary"
                     : "text-gray-700 hover:bg-gray-100"
                 )}
               >
                 {item.icon}
-                {item.label}
+                {!collapsed && <span className="text-sm">{item.label}</span>}
               </Link>
             </li>
           ))}
         </ul>
       </div>
 
-      {/* Footer */}
-      <div className="px-2">
+      <div className={cn("flex items-center", collapsed?" justify-center":" justify-between")}>
         <Link
           href="/logout"
-          className="flex items-center gap-2 text-sm text-gray-700 hover:text-red-600"
+          className={cn(
+            "flex blok items-center gap-2 p-2 rounded-lg transition-colors duration-200 hover:bg-gray-100",
+            collapsed ? "justify-center hidden" : ""
+          )}
         >
-          خروج از حساب
+          <span className="text-sm text-center block text-gray-700">
+            {!collapsed && "خروج از حساب"}
+          </span>
         </Link>
+        <button
+          onClick={() => setCollapsed(!collapsed)}
+          className="mb-4 p-2 rounded-full hover:bg-gray-200 transition"
+          aria-label={collapsed ? "باز کردن سایدبار" : "بستن سایدبار"}
+        >
+          <div
+            className={cn(
+              "w-4 h-4 border-t-2 border-r-2 transform transition-transform",
+              collapsed ? "rotate-230" : " rotate-45"
+            )}
+          />
+        </button>
       </div>
     </aside>
   );

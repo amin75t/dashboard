@@ -4,6 +4,8 @@ import {
   useReactTable,
   getCoreRowModel,
   ColumnDef,
+  getSortedRowModel,
+  SortingState,
 } from "@tanstack/react-table";
 import {
   FilterComponent,
@@ -14,31 +16,86 @@ import DataTable from "@/components/Table";
 import { RowType } from "@/lib/types/tableTypes";
 
 const tableColumns: ColumnDef<RowType, any>[] = [
-  { accessorKey: "id", header: "ID" },
-  { accessorKey: "name", header: "کالا" },
-  { accessorKey: "lab", header: "آزمایشگاه تخصیص یافته" },
-  { accessorKey: "hs", header: "HS Code" },
-  { accessorKey: "pay", header: "پرداخت" },
-  { accessorKey: "date", header: "تاریخ درخواست" },
+  {
+    accessorKey: "id",
+    cell: ({ getValue }) => {
+      return <p>{getValue()}</p>;
+    },
+    header: () => <p className=" text-xs text-[#888888]">ID</p>,
+  },
+  {
+    accessorKey: "name",
+    cell: ({ getValue }) => {
+      return <p className="font-bold">{getValue()}</p>;
+    },
+    header: () => <p className=" text-xs text-[#888888]">کالا</p>,
+  },
+  {
+    accessorKey: "lab",
+    enableSorting: true,
+    cell: ({ getValue }) => {
+      return <p className="text-center">{getValue()}</p>;
+    },
+    header: () => (
+      <p className="text-center cursor-pointer text-xs text-[#888888]">
+        آزمایشگاه تخصیص یافته
+      </p>
+    ),
+  },
+  {
+    accessorKey: "hs",
+    enableSorting: true,
+
+    cell: ({ getValue }) => {
+      return <p>{getValue()}</p>;
+    },
+    header: () => <p className=" text-xs text-[#888888]">HS Code</p>,
+  },
+  {
+    accessorKey: "pay",
+    enableSorting: true,
+    header: ({ column }) => {
+      return (
+        <p
+          className="cursor-pointer text-xs text-[#888888] flex items-center"
+          onClick={column.getToggleSortingHandler()}
+        >
+          پرداخت
+        </p>
+      );
+    },
+    cell: ({ getValue }) => <p>{getValue()}</p>,
+  },
+  {
+    accessorKey: "date",
+    cell: ({ getValue }) => {
+      return <p className="text-center">{getValue()}</p>;
+    },
+    header: () => (
+      <p className=" text-xs text-center text-[#888888]">تاریخ درخواست</p>
+    ),
+  },
   {
     accessorKey: "status",
-    header: "وضعیت",
+    header: () => <p className=" text-center text-xs text-[#888888]">وضعیت</p>,
     cell: ({ getValue }) => {
       const status = getValue() as TestStatus;
       const color = statusColors[status];
       return (
-        <div
-          className="w-fit py-0.5 px-2 rounded-xl"
-          style={{ backgroundColor: color.bg }}
-        >
-          <p
-            className={`px-2 py-1 rounded-full text-xs`}
-            style={{
-              color: color.textColor,
-            }}
+        <div className="flex items-center justify-center">
+          <div
+            className="w-fit py-0.5 px-2 rounded-xl"
+            style={{ backgroundColor: color.bg }}
           >
-            {status}
-          </p>
+            <p
+              className={`px-2 py-1 rounded-full text-xs`}
+              style={{
+                color: color.textColor,
+              }}
+            >
+              {status}
+            </p>
+          </div>
         </div>
       );
     },
@@ -175,17 +232,21 @@ export default function MyTablePage() {
       ),
     [status, pay, name, search]
   );
-
+  const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable({
     data: filteredData,
     columns,
+    state: { sorting },
+    onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    enableSortingRemoval: true,
   });
 
   return (
     <div className="p-8" dir="rtl">
-      <div className="flex flex-col flex-wrap gap-4 mb-4 items-start justify-start">
-        <div className="relative bg-neutral-50 py-2 px-1 rounded-lg">
+      <div className="flex flex-col flex-wrap gap-4 mb-4 items-start  rounded-3xl justify-start">
+        <div className="relative bg-neutral-50 py-2 pr-3 w-[400px] rounded-3xl">
           <input
             className="outline-0 border-none rounded-md w-64 text-sm"
             type="text"

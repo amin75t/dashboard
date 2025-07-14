@@ -53,7 +53,7 @@ export default function DataTable<T>({ table, columns }: Props<T>) {
             return (
               <tr
                 style={{
-                  backgroundColor: isSpecial ? "#FCFAF0" : "#fffffff",
+                  backgroundColor: isSpecial ? "#FCFAF0" : "#F7F7F7",
                 }}
                 key={row.id}
                 className="rounded-xl cursor-pointer"
