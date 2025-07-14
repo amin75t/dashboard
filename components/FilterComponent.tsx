@@ -7,11 +7,11 @@ export enum TestStatus {
   TestStarted = "شروع تست",
   TestCompleted = "اتمام تست",
 }
-// const statusColors: Record<TestStatus, string> = {
-//   [TestStatus.UnderReview]: "#FABB05", // زرد
-//   [TestStatus.TestStarted]: "#34A853", // سبز
-//   [TestStatus.TestCompleted]: "#4285F4", // آبی
-// };
+export const statusColors: Record<TestStatus, { textColor: string; bg :string}> = {
+  [TestStatus.UnderReview]: { bg: "#FFFFFF", textColor: "#F5B800" }, // زرد
+  [TestStatus.TestStarted]: { bg: "#e7f4ea", textColor: "#4CAF50" }, // سبز
+  [TestStatus.TestCompleted]: { bg: "#e7f4ea", textColor: "#44ADEC" }, // آبی
+};
 
 interface FilterComponentProps {
   filters: TableFilter[];

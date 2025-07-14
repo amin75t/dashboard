@@ -5,7 +5,11 @@ import {
   getCoreRowModel,
   ColumnDef,
 } from "@tanstack/react-table";
-import { FilterComponent } from "@/components/FilterComponent";
+import {
+  FilterComponent,
+  statusColors,
+  TestStatus,
+} from "@/components/FilterComponent";
 import DataTable from "@/components/Table";
 import { RowType } from "@/lib/types/tableTypes";
 
@@ -19,9 +23,36 @@ const tableColumns: ColumnDef<RowType, any>[] = [
   {
     accessorKey: "status",
     header: "وضعیت",
-    cell: ({ getValue }: { getValue: () => string }) => (
-      <span>{getValue() as string}</span>
-    ),
+    cell: ({ getValue }) => {
+      const status = getValue() as TestStatus;
+      const color = statusColors[status];
+      return (
+        <div
+          className="w-fit py-0.5 px-2 rounded-xl"
+          style={{ backgroundColor: color.bg }}
+        >
+          <p
+            className={`px-2 py-1 rounded-full text-xs`}
+            style={{
+              color: color.textColor,
+            }}
+          >
+            {status}
+          </p>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "more",
+    header: "",
+    cell: ({ getValue }) => {
+      return (
+        <button className="text-primary-600 font-medium bg-[#EDE3C7] px-4 py-1 rounded-full text-sm">
+          بیشتر
+        </button>
+      );
+    },
   },
 ];
 const testData = [
