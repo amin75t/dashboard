@@ -132,7 +132,9 @@ export default function AddProductModal() {
               <p>برای بارگذاری فایل، بکشید یا مرور کنید</p>
             </Upload.Dragger>
             {errors.file && (
-              <p className="text-red-500 text-xs mt-1">{errors.file.message}</p>
+              <p className="text-red-500 text-xs mt-1">
+                {errors.file.message && `${errors.file.message}`}
+              </p>
             )}
           </div>
         </form>

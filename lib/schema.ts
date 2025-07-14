@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+
+
 export const schemaCreatePlan = z.object({
   type: z.string().nonempty("نوع کالا باید انتخاب شود"),
   name: z.string().min(1, "نام کالا"),
@@ -11,17 +13,13 @@ export const schemaCreatePlan = z.object({
     .min(1, "حداقل ۱ باید باشد"),
   file: z
     .any()
-    .refine(
-      (files) => (files instanceof FileList ? files.length > 0 : !!files),
-      "فایل الزامیه"
-    )
-    .refine((files) => {
-      const f = files instanceof FileList ? files[0] : files;
-      const allowed = [
+    .refine((f) => f instanceof File, "لطفاً یک فایل انتخاب کنید")
+    .refine((f) => {
+      const allowedTypes = [
         "application/pdf",
         "application/msword",
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       ];
-      return allowed.includes(f.type);
-    }, "فرمت فایل باید PDF, DOC یا DOCX باشد"),
+      return f instanceof File && allowedTypes.includes(f.type);
+    }, "فرمت فایل باید PDF، DOC یا DOCX باشد"),
 });
