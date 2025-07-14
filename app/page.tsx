@@ -1,7 +1,9 @@
-import Image from "next/image";
+import MyTablePage from "./mytable/page";
 
 export default function Home() {
   return (
-    <div className=""></div>
+    <div className="">
+      <MyTablePage/>
+    </div>
   );
 }
