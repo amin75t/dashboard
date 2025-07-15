@@ -16,10 +16,17 @@ export const schemaCreatePlan = z.object({
     .refine((f) => f instanceof File, "لطفاً یک فایل انتخاب کنید")
     .refine((f) => {
       const allowedTypes = [
+        // تصاویر
+        "image/jpeg",
+        "image/png",
+        "image/gif",
+        "video/mp4",
         "application/pdf",
         "application/msword",
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "image/vnd.adobe.photoshop",
+        "application/postscript", 
       ];
       return f instanceof File && allowedTypes.includes(f.type);
-    }, "فرمت فایل باید PDF، DOC یا DOCX باشد"),
+    }, "فرمت فایل باید یکی از موارد مجاز باشد: PDF، DOC، DOCX، JPEG، PNG، GIF، MP4، PSD، AI"),
 });

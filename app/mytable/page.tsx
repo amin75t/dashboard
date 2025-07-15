@@ -14,6 +14,11 @@ import {
 } from "@/components/FilterComponent";
 import DataTable from "@/components/Table";
 import { RowType } from "@/lib/types/tableTypes";
+import { Button } from "antd";
+import { useModalAddProduct } from "@/lib/hooks/useModal";
+import AddProductModal from "@/components/AddProductModal";
+import "@ant-design/v5-patch-for-react-19";
+import PrimaryBtn from "@/components/primeryBTN";
 
 const tableColumns: ColumnDef<RowType, any>[] = [
   {
@@ -181,14 +186,12 @@ const nameOptions = [
   })),
 ];
 
-// type RowType = (typeof testData)[0];
-
 export default function MyTablePage() {
   const [status, setStatus] = useState("");
   const [pay, setPay] = useState("");
   const [name, setName] = useState("");
   const [search, setSearch] = useState("");
-
+  const modal = useModalAddProduct();
   const columns = useMemo(() => tableColumns, []);
 
   const filters = useMemo(
@@ -242,22 +245,33 @@ export default function MyTablePage() {
     getSortedRowModel: getSortedRowModel(),
     enableSortingRemoval: true,
   });
+  const ButtonAddProduct = useMemo(() => {
+    return (
+      <PrimaryBtn color="cyan" onClick={modal.openModal}>
+        ثبت کالای جدید جهت اخذ استاندارد
+      </PrimaryBtn>
+    );
+  }, []);
 
   return (
     <div className="p-8" dir="rtl">
       <div className="flex flex-col flex-wrap gap-4 mb-4 items-start  rounded-3xl justify-start">
-        <div className="relative bg-neutral-50 py-2 pr-3 w-[400px] rounded-3xl">
-          <input
-            className="outline-0 border-none rounded-md w-64 text-sm"
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="جستجو در درخواست‌ها"
-          />
+        <div className="flex items-center justify-between w-full">
+          <div className="relative bg-neutral-50 py-2 pr-3 w-[400px] rounded-3xl">
+            <input
+              className="outline-0 border-none rounded-md w-64 text-sm"
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="جستجو در درخواست‌ها"
+            />
+          </div>
+          {ButtonAddProduct}
         </div>
         <FilterComponent filters={filters} />
       </div>
       <DataTable table={table} columns={columns} />
+      <AddProductModal closeModal={modal.closeModal} open={modal.open} />
     </div>
   );
 }

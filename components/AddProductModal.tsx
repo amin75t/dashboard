@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Modal, Button, Select, Input, Upload } from "antd";
+import { useEffect, useState } from "react";
+import { Modal, Button, Select, Input, Upload, Row, Col } from "antd";
 import type { UploadProps } from "antd";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,12 +9,16 @@ import { z } from "zod";
 import { InboxOutlined } from "@ant-design/icons";
 import { Option } from "antd/es/mentions";
 import { schemaCreatePlan } from "@/lib/schema";
+import Image from "next/image";
+import PrimaryBtn from "./primeryBTN";
 
 type FormSchema = z.infer<typeof schemaCreatePlan>;
 
-export default function AddProductModal() {
-  const [open, setOpen] = useState(false);
-
+type Props = {
+  open: boolean;
+  closeModal: () => void;
+};
+export default function AddProductModal({ open, closeModal }: Props) {
   const {
     register,
     handleSubmit,
@@ -24,7 +28,7 @@ export default function AddProductModal() {
   } = useForm<FormSchema>({
     resolver: zodResolver(schemaCreatePlan),
     defaultValues: {
-      type: "",
+      type: undefined,
       name: "",
       country: "",
       warehouseNumber: "",
@@ -35,7 +39,7 @@ export default function AddProductModal() {
 
   const onSubmit = (data: FormSchema) => {
     console.log("مقادیر صحیح:", data);
-    setOpen(false);
+    closeModal();
   };
 
   const uploadProps: UploadProps = {
@@ -46,98 +50,153 @@ export default function AddProductModal() {
     multiple: false,
     fileList: [],
   };
-
+  useEffect(() => {
+    console.log(open);
+  }, [open]);
   return (
     <>
-      <Button type="primary" onClick={() => setOpen(true)}>
-        + افزودن کالا
-      </Button>
-
       <Modal
-        style={{ direction: "rtl" }}
+        styles={{
+          content: {
+            backgroundColor: "#F7F7F7",
+          },
+          header: {
+            backgroundColor: "#F7F7F7",
+          },
+        }}
         title="افزودن کالا"
         open={open}
-        onCancel={() => setOpen(false)}
-        okText="ثبت"
-        onOk={handleSubmit(onSubmit)}
-        width={1102}
+        onCancel={() => closeModal()}
+        footer={null}
+        width={1000}
+        style={{ direction: "rtl" }}
       >
-        <form className="space-y-4">
-          <div dir="rtl">
-            <label>نوع کالا</label>
-            <Controller
-              control={control}
-              name="type"
-              render={({ field }) => (
-                <Select
-                  direction="rtl"
-                  className=" text-right"
-                  {...field}
-                  style={{ width: "100%" }}
-                >
-                  <Select.Option value="">انتخاب کنید</Select.Option>
-                  <Select.Option value="a">نوع A</Select.Option>
-                  <Select.Option value="b">نوع B</Select.Option>
-                </Select>
-              )}
-            />
+        <div className=" flex items-center justify-center py-[5vh]">
+          <form className="space-y-8 w-4/6 " dir="rtl">
+            <Row gutter={16}>
+              <Controller
+                name="type"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    placeholder={
+                      <span className="flex items-center gap-2">
+                        <img
+                          src="/icons/Icon-Right copy 2.svg"
+                          className="w-5 h-5"
+                          alt="کالا"
+                        />
+                        <span>گونه کالای خود را انتخاب کنید</span>
+                      </span>
+                    }
+                    size="large"
+                    direction="rtl"
+                    style={{ width: "100%", borderRadius: 16 }}
+                  >
+                    <Select.Option value="a">نوع A</Select.Option>
+                    <Select.Option value="b">نوع B</Select.Option>
+                  </Select>
+                )}
+              />
+            </Row>
+
             {errors.type && (
-              <p className="text-red-500 text-xs mt-1">{errors.type.message}</p>
+              <p className="text-red-500 text-sm">{errors.type.message}</p>
             )}
-          </div>
 
-          <div>
-            <label>نام کالا</label>
-            <Input dir="lrt" {...register("name")} />
-            {errors.name && (
-              <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
-            )}
-          </div>
+            <Row gutter={16}>
+              <Col span={12}>
+                <label>نام کالا</label>
+                <Input
+                  {...register("name")}
+                  size="large"
+                  style={{ borderRadius: 16 }}
+                  placeholder="اینجا بنویسید"
+                />
+                {errors.name && (
+                  <p className="text-red-500 text-sm">{errors.name.message}</p>
+                )}
+              </Col>
+              <Col span={12}>
+                <label>شماره قبض انبار</label>
+                <Input
+                  {...register("warehouseNumber")}
+                  size="large"
+                  style={{ borderRadius: 16 }}
+                  placeholder="اینجا بنویسید"
+                />
+              </Col>
+            </Row>
 
-          <div className="flex gap-4">
-            <div className="flex-1">
-              <label>کشور مبدا</label>
-              <Input {...register("country")} />
-              {errors.country && (
-                <p className="text-red-500 text-xs mt-1">
-                  {errors.country.message}
-                </p>
+            <Row gutter={16}>
+              <Col span={12}>
+                <label>کشور مبدا</label>
+                <Input
+                  {...register("country")}
+                  size="large"
+                  style={{ borderRadius: 16 }}
+                  placeholder="اینجا بنویسید"
+                />
+                {errors.country && (
+                  <p className="text-red-500 text-sm">
+                    {errors.country.message}
+                  </p>
+                )}
+              </Col>
+              <Col span={12}>
+                <label>تعداد</label>
+                <Input
+                  {...register("quantity", { valueAsNumber: true })}
+                  size="large"
+                  type="number"
+                  style={{ borderRadius: 16 }}
+                  placeholder="اینجا بنویسید"
+                />
+                {errors.quantity && (
+                  <p className="text-red-500 text-sm">
+                    {errors.quantity.message}
+                  </p>
+                )}
+              </Col>
+            </Row>
+
+            <div>
+              <Upload.Dragger {...uploadProps} style={{ borderRadius: 16 }}>
+                <div className="!flex !items-center w-[622px] py-10 !justify-center !flex-col ">
+                  <Image
+                    src={"/icons/Upload icon.svg"}
+                    alt=""
+                    width={60}
+                    height={60}
+                    className="mb-2"
+                  />
+                  <p className="text-gray-700 text-sm">
+                    برای بارگذاری فایل، بکشید و رها کنید یا مرور کنید{" "}
+                  </p>
+                  <p className="text-gray-500 text-xs mt-1">
+                    فرمت‌های قابل پشتیبانی: JPEG، PNG، GIF، MP4، PDF، PSD، AI،
+                    Word، PPT{" "}
+                  </p>
+                </div>
+              </Upload.Dragger>
+              {errors.file && (
+                <p className="text-red-500 text-sm mt-1">{`${errors.file.message}`}</p>
               )}
             </div>
-
-            <div className="flex-1">
-              <label>شماره قبض انبار</label>
-              <Input {...register("warehouseNumber")} />
-            </div>
-          </div>
-
-          <div>
-            <label>تعداد</label>
-            <Input
-              type="number"
-              {...register("quantity", { valueAsNumber: true })}
-            />
-            {errors.quantity && (
-              <p className="text-red-500 text-xs mt-1">
-                {errors.quantity.message}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <Upload.Dragger {...uploadProps}>
-              <p className="ant-upload-drag-icon">
-                <InboxOutlined />
-              </p>
-              <p>برای بارگذاری فایل، بکشید یا مرور کنید</p>
-            </Upload.Dragger>
-            {errors.file && (
-              <p className="text-red-500 text-xs mt-1">
-                {errors.file.message && `${errors.file.message}`}
-              </p>
-            )}
-          </div>
-        </form>
+          </form>
+        </div>
+        <div className="flex items-center justify-center my-10">
+          <PrimaryBtn
+            style={{
+              width: "620px",
+              fontSize: "15px",
+            }}
+            color={"cyan"}
+          >
+            ثبت
+          </PrimaryBtn>
+        </div>
       </Modal>
     </>
   );
