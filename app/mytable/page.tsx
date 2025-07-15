@@ -80,13 +80,6 @@ export default function MyTablePage() {
     getSortedRowModel: getSortedRowModel(),
     enableSortingRemoval: true,
   });
-  const ButtonAddProduct = useMemo(() => {
-    return (
-      <PrimaryBtn color="cyan" onClick={modal.openModal}>
-        ثبت کالای جدید جهت اخذ استاندارد
-      </PrimaryBtn>
-    );
-  }, []);
 
   return (
     <div className="p-8" dir="rtl">
@@ -101,7 +94,9 @@ export default function MyTablePage() {
               placeholder="جستجو در درخواست‌ها"
             />
           </div>
-          {ButtonAddProduct}
+          <PrimaryBtn color="cyan" onClick={modal.openModal}>
+            ثبت کالای جدید جهت اخذ استاندارد
+          </PrimaryBtn>
         </div>
         <FilterComponent filters={filters} />
       </div>

@@ -72,7 +72,11 @@ export default function AddProductModal({ open, closeModal }: Props) {
         style={{ direction: "rtl" }}
       >
         <div className=" flex items-center justify-center py-[5vh]">
-          <form className="space-y-8 w-4/6 " dir="rtl">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="space-y-8 w-4/6 "
+            dir="rtl"
+          >
             <Row gutter={16}>
               <Controller
                 name="type"
@@ -102,12 +106,14 @@ export default function AddProductModal({ open, closeModal }: Props) {
             </Row>
 
             {errors.type && (
-              <p className="text-red-500 text-sm">{errors.type.message}</p>
+              <p className="text-red-500 text-sm">{`${errors.type.message}`}</p>
             )}
 
             <Row gutter={16}>
               <Col span={12}>
-                <label>نام کالا</label>
+                <label>
+                  نام کالا <span className="text-red-500 mr-1">*</span>
+                </label>
                 <Input
                   {...register("name")}
                   size="large"
@@ -119,19 +125,28 @@ export default function AddProductModal({ open, closeModal }: Props) {
                 )}
               </Col>
               <Col span={12}>
-                <label>شماره قبض انبار</label>
+                <label>
+                  شماره قبض انبار <span className="text-red-500 mr-1">*</span>
+                </label>
                 <Input
                   {...register("warehouseNumber")}
                   size="large"
                   style={{ borderRadius: 16 }}
                   placeholder="اینجا بنویسید"
                 />
+                {errors.warehouseNumber && (
+                  <p className="text-red-500 text-sm">
+                    {errors.warehouseNumber.message}
+                  </p>
+                )}
               </Col>
             </Row>
 
             <Row gutter={16}>
               <Col span={12}>
-                <label>کشور مبدا</label>
+                <label>
+                  کشور مبدا <span className="text-red-500 mr-1">*</span>
+                </label>
                 <Input
                   {...register("country")}
                   size="large"
@@ -145,7 +160,9 @@ export default function AddProductModal({ open, closeModal }: Props) {
                 )}
               </Col>
               <Col span={12}>
-                <label>تعداد</label>
+                <label>
+                  تعداد <span className="text-red-500 mr-1">*</span>
+                </label>
                 <Input
                   {...register("quantity", { valueAsNumber: true })}
                   size="large"
@@ -184,18 +201,19 @@ export default function AddProductModal({ open, closeModal }: Props) {
                 <p className="text-red-500 text-sm mt-1">{`${errors.file.message}`}</p>
               )}
             </div>
+            <div className="flex items-center justify-center my-10">
+              <PrimaryBtn
+                style={{
+                  width: "620px",
+                  fontSize: "15px",
+                }}
+                color={"cyan"}
+                htmlType={"submit"}
+              >
+                ثبت
+              </PrimaryBtn>
+            </div>
           </form>
-        </div>
-        <div className="flex items-center justify-center my-10">
-          <PrimaryBtn
-            style={{
-              width: "620px",
-              fontSize: "15px",
-            }}
-            color={"cyan"}
-          >
-            ثبت
-          </PrimaryBtn>
         </div>
       </Modal>
     </>

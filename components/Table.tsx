@@ -53,8 +53,6 @@ export default function DataTable<T>({ table, columns }: Props<T>) {
         ) : (
           table.getRowModel().rows.map((row) => {
             const isSpecialState = row.getValue("status") == "در حال بررسی";
-            const isSuccessfullyPay = row.getValue("pay") == "موفق";
-
             return (
               <tr
                 style={{
