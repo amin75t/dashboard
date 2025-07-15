@@ -1,13 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Modal, Button, Select, Input, Upload, Row, Col } from "antd";
+import { useEffect } from "react";
+import { Modal, Select, Input, Upload, Row, Col } from "antd";
 import type { UploadProps } from "antd";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { InboxOutlined } from "@ant-design/icons";
-import { Option } from "antd/es/mentions";
 import { schemaCreatePlan } from "@/lib/schema";
 import Image from "next/image";
 import PrimaryBtn from "./primeryBTN";
@@ -86,10 +84,12 @@ export default function AddProductModal({ open, closeModal }: Props) {
                     {...field}
                     placeholder={
                       <span className="flex items-center gap-2">
-                        <img
+                        <Image
                           src="/icons/Icon-Right copy 2.svg"
-                          className="w-5 h-5"
+                          // className="w-5 h-5"
                           alt="کالا"
+                          width={20}
+                          height={20}
                         />
                         <span>گونه کالای خود را انتخاب کنید</span>
                       </span>

@@ -1,8 +1,8 @@
 import { Button, ButtonProps } from "antd";
-import { ButtonHTMLAttributes, PropsWithChildren } from "react";
+import { PropsWithChildren } from "react";
 type PrimaryBtnProps = PropsWithChildren<
   {
-    color:
+    color?:
       | "cyan"
       | "default"
       | "primary"
@@ -19,6 +19,7 @@ type PrimaryBtnProps = PropsWithChildren<
       | "geekblue"
       | "lime"
       | "gold"
+      | string
       | undefined;
   } & ButtonProps
 >;
@@ -32,7 +33,7 @@ const PrimaryBtn = ({
       {...props}
       color={color}
       variant="solid"
-      className=" !rounded-xl !font-extrabold !py-5"
+      className=" !rounded-xl !font-extrabold !py-5 !px-5"
     >
       {children}
     </Button>

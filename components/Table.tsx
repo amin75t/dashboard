@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import {
   ColumnDef,
   flexRender,
@@ -12,10 +12,18 @@ type Props<T> = {
   table: ReactTable<T>;
   columns: ColumnDef<RowType>[];
 };
-function getAccessorKey<T>(column: ColumnDef<T, unknown>): string | undefined {
-  return "accessorKey" in column ? (column as any).accessorKey : undefined;
-}
+type AccessorKeyColumnDef<T> = Extract<
+  ColumnDef<T, unknown>,
+  { accessorKey: string }
+>;
 
+export function getAccessorKey<T>(
+  column: ColumnDef<T, unknown>
+): string | undefined {
+  return "accessorKey" in column
+    ? (column as AccessorKeyColumnDef<T>).accessorKey
+    : undefined;
+}
 export default function DataTable<T>({ table, columns }: Props<T>) {
   return (
     <table className="w-full text-right border-separate border-spacing-y-2 bg-white rounded-xl shadow-sm">
@@ -52,7 +60,7 @@ export default function DataTable<T>({ table, columns }: Props<T>) {
           </tr>
         ) : (
           table.getRowModel().rows.map((row) => {
-            const isSpecialState = row.getValue("status") == "در حال بررسی";
+            const isSpecialState:boolean = row.getValue("status") == "در حال بررسی";
             return (
               <tr
                 style={{

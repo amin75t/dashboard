@@ -3,7 +3,6 @@ import { useMemo, useState } from "react";
 import {
   useReactTable,
   getCoreRowModel,
-  ColumnDef,
   getSortedRowModel,
   SortingState,
 } from "@tanstack/react-table";

@@ -3,6 +3,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { statusColors, TestStatus } from "@/components/FilterComponent";
 
 import "@ant-design/v5-patch-for-react-19";
+import PrimaryBtn from "@/components/primeryBTN";
 
 export const testData = [
   {
@@ -73,26 +74,26 @@ export const nameOptions = [
   })),
 ];
 
-export const tableColumns: ColumnDef<RowType, any>[] = [
+export const tableColumns: ColumnDef<RowType, unknown>[] = [
   {
     accessorKey: "id",
-    cell: ({ getValue }) => {
-      return <p>{getValue()}</p>;
+    cell: (info) => {
+      return <p>{`${info.getValue()}`}</p>;
     },
     header: () => <p className=" text-xs text-[#888888]">ID</p>,
   },
   {
     accessorKey: "name",
-    cell: ({ getValue }) => {
-      return <p className="font-bold">{getValue()}</p>;
+    cell: (info) => {
+      return <p className="font-bold">{`${info.getValue()}`}</p>;
     },
     header: () => <p className=" text-xs text-[#888888]">کالا</p>,
   },
   {
     accessorKey: "lab",
     enableSorting: true,
-    cell: ({ getValue }) => {
-      return <p className="text-center">{getValue()}</p>;
+    cell: (info) => {
+      return <p className="text-center">{`${info.getValue()}`}</p>;
     },
     header: () => (
       <p className="text-center cursor-pointer text-xs text-[#888888]">
@@ -104,8 +105,8 @@ export const tableColumns: ColumnDef<RowType, any>[] = [
     accessorKey: "hs",
     enableSorting: true,
 
-    cell: ({ getValue }) => {
-      return <p>{getValue()}</p>;
+    cell: (info) => {
+      return <p>{`${info.getValue()}`}</p>;
     },
     header: () => <p className=" text-xs text-[#888888]">HS Code</p>,
   },
@@ -122,12 +123,12 @@ export const tableColumns: ColumnDef<RowType, any>[] = [
         </p>
       );
     },
-    cell: ({ getValue }) => <p>{getValue()}</p>,
+    cell: (info) => <p>{`${info.getValue()}`}</p>,
   },
   {
     accessorKey: "date",
-    cell: ({ getValue }) => {
-      return <p className="text-center">{getValue()}</p>;
+    cell: (info) => {
+      return <p className="text-center">{`${info.getValue()}`}</p>;
     },
     header: () => (
       <p className=" text-xs text-center text-[#888888]">تاریخ درخواست</p>
@@ -136,8 +137,8 @@ export const tableColumns: ColumnDef<RowType, any>[] = [
   {
     accessorKey: "status",
     header: () => <p className=" text-center text-xs text-[#888888]">وضعیت</p>,
-    cell: ({ getValue }) => {
-      const status = getValue() as TestStatus;
+    cell: (info) => {
+      const status = info.getValue() as TestStatus;
       const color = statusColors[status];
       return (
         <div className="flex items-center justify-center">
@@ -161,11 +162,18 @@ export const tableColumns: ColumnDef<RowType, any>[] = [
   {
     accessorKey: "more",
     header: "",
-    cell: ({ getValue }) => {
+    cell: () => {
       return (
-        <button className="text-primary-600 font-medium bg-[#EDE3C7] px-4 py-1 rounded-full text-sm">
+        <PrimaryBtn
+          style={{
+            backgroundColor: "#E1D4AD",
+          }}
+        >
           بیشتر
-        </button>
+        </PrimaryBtn>
+        // <button className="text-primary-600 font-medium bg-[#EDE3C7] px-4 py-1 rounded-full text-sm">
+        //   بیشتر
+        // </button>
       );
     },
   },
