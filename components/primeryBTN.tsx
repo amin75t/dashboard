@@ -33,7 +33,7 @@ const PrimaryBtn = ({
       {...props}
       color={color}
       variant="solid"
-      className=" !rounded-xl !font-extrabold !py-5 !px-5"
+      className="BYekan !rounded-xl !font-extrabold !py-5 !px-5"
     >
       {children}
     </Button>

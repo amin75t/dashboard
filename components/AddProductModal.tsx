@@ -68,11 +68,12 @@ export default function AddProductModal({ open, closeModal }: Props) {
         footer={null}
         width={1000}
         style={{ direction: "rtl" }}
+        className="BYekan"
       >
         <div className=" flex items-center justify-center py-[5vh]">
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="space-y-8 w-4/6 "
+            className="BYekan space-y-8 w-4/6 "
             dir="rtl"
           >
             <Row gutter={16}>
@@ -81,6 +82,7 @@ export default function AddProductModal({ open, closeModal }: Props) {
                 control={control}
                 render={({ field }) => (
                   <Select
+                    className="BYekan"
                     {...field}
                     placeholder={
                       <span className="flex items-center gap-2">
@@ -115,6 +117,7 @@ export default function AddProductModal({ open, closeModal }: Props) {
                   نام کالا <span className="text-red-500 mr-1">*</span>
                 </label>
                 <Input
+                  className="BYekan"
                   {...register("name")}
                   size="large"
                   style={{ borderRadius: 16 }}
@@ -129,6 +132,7 @@ export default function AddProductModal({ open, closeModal }: Props) {
                   شماره قبض انبار <span className="text-red-500 mr-1">*</span>
                 </label>
                 <Input
+                  className="BYekan"
                   {...register("warehouseNumber")}
                   size="large"
                   style={{ borderRadius: 16 }}
@@ -148,6 +152,7 @@ export default function AddProductModal({ open, closeModal }: Props) {
                   کشور مبدا <span className="text-red-500 mr-1">*</span>
                 </label>
                 <Input
+                  className="BYekan"
                   {...register("country")}
                   size="large"
                   style={{ borderRadius: 16 }}
@@ -164,6 +169,7 @@ export default function AddProductModal({ open, closeModal }: Props) {
                   تعداد <span className="text-red-500 mr-1">*</span>
                 </label>
                 <Input
+                  className="BYekan"
                   {...register("quantity", { valueAsNumber: true })}
                   size="large"
                   type="number"
@@ -180,7 +186,7 @@ export default function AddProductModal({ open, closeModal }: Props) {
 
             <div>
               <Upload.Dragger {...uploadProps} style={{ borderRadius: 16 }}>
-                <div className="!flex !items-center w-[622px] py-10 !justify-center !flex-col ">
+                <div className="!flex BYekan !items-center w-[622px] py-10 !justify-center !flex-col ">
                   <Image
                     src={"/icons/Upload icon.svg"}
                     alt=""

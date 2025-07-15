@@ -13,7 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fa">
-      <body className={` antialiased`}>
+      <body className={` antialiased BYekan`}>
         <div className="flex items-start justify-end">
           <div className="flex-1">{children}</div>
           <Sidebar />
