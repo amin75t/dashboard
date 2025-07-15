@@ -1,5 +1,5 @@
+import { useCounterStore } from '@/lib/store';
 import { renderHook, act } from '@testing-library/react';
-import { useCounterStore } from './store';
 import { vi, describe, it, expect } from "vitest";
 
 describe('useCounterStore', () => {
