@@ -9,8 +9,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "مدیریت سفارشات",
-  description: "مدیریت سفارشات",
+  title: "مدیریت",
+  description: "مدیریت",
 };
 
 export default function RootLayout({

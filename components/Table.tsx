@@ -6,11 +6,15 @@ import {
   Table as ReactTable,
 } from "@tanstack/react-table";
 import { RowType } from "@/lib/types/tableTypes";
+import { cn } from "@/lib/utils/className";
 
 type Props<T> = {
   table: ReactTable<T>;
   columns: ColumnDef<RowType>[];
 };
+function getAccessorKey<T>(column: ColumnDef<T, unknown>): string | undefined {
+  return "accessorKey" in column ? (column as any).accessorKey : undefined;
+}
 
 export default function DataTable<T>({ table, columns }: Props<T>) {
   return (
@@ -36,7 +40,7 @@ export default function DataTable<T>({ table, columns }: Props<T>) {
           );
         })}
       </thead>
-      <tbody >
+      <tbody>
         {table.getRowModel().rows.length === 0 ? (
           <tr>
             <td
@@ -48,20 +52,29 @@ export default function DataTable<T>({ table, columns }: Props<T>) {
           </tr>
         ) : (
           table.getRowModel().rows.map((row) => {
-            const isSpecial = row.getValue("status") == "در حال بررسی";
+            const isSpecialState = row.getValue("status") == "در حال بررسی";
+            const isSuccessfullyPay = row.getValue("pay") == "موفق";
+
             return (
               <tr
                 style={{
-                  backgroundColor: isSpecial ? "#FCFAF0" : "#F7F7F7",
+                  backgroundColor: isSpecialState ? "#FCFAF0" : "#F7F7F7",
                 }}
                 key={row.id}
                 className="rounded-xl cursor-pointer"
               >
                 {row.getVisibleCells().map((cell) => {
+                  const columnKey = getAccessorKey(cell.column.columnDef);
+                  const isPayColumn = columnKey === "pay";
+                  const isSuccessfullyPay = row.getValue("pay") === "موفق";
+
                   return (
                     <td
                       key={cell.id}
-                      className="py-2  px-3 text-sm whitespace-nowrap"
+                      className={cn(
+                        "py-2  px-3 text-sm whitespace-nowrap",
+                       !isSuccessfullyPay && isPayColumn ? "text-red-600" : ""
+                      )}
                     >
                       {flexRender(
                         cell.column.columnDef.cell,
