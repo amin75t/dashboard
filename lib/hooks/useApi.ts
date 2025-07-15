@@ -6,7 +6,7 @@ import {
   UseQueryOptions,
   UseQueryResult,
 } from "@tanstack/react-query";
-import axios, { AxiosError, AxiosRequestConfig } from "axios";
+import axios, { AxiosError } from "axios";
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -41,7 +41,7 @@ export const useApiMutation = (url: string, method = "POST") => {
   return useMutation({
     mutationFn: (data: {
       url: string;
-      body?: Record<string, any>;
+      body?: Record<string, unknown>;
       params?: unknown;
     }) => {
       const { url, body, params } = data;
